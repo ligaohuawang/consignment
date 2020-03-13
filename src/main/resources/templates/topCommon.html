@@ -19,7 +19,7 @@
         <div class="dorpdown-layer">
             <div class="spacer"></div>
             <!--<div class="prompt"></div><div class="nogoods"><b></b>购物车中还没有商品，赶紧选购吧！</div>-->
-            <ul class="p_s_list" id="cartList"><!--TODO 0.头部购物车展示的地方-->
+            <ul class="p_s_list" id="cartList">
                 <li>
                     <div class="img"><img src="images/tianma.png"></div>
                     <div class="content"><p><a href="#">产品名称</a></p><p>颜色分类:紫花8255尺码:XL</p></div>
@@ -39,7 +39,6 @@
 <script>
 
     $(function () {
-        //TODO 1.头部发Ajax去查询购物车信息
         $.ajax({
             url: "ShopCartController/shopCartList",
             success: function (data) {
@@ -65,8 +64,6 @@
             },
             dataType: "jsonp"
         });
-
-        // TODO 4.发送请求去查询购物车所有商品数量和价格之和
         $.ajax({
             url: "ShopCartController/selectAllGoodsNumberAndPrice",
             success: function (data) {

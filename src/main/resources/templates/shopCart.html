@@ -18,33 +18,50 @@
 </head>
 <script type="text/javascript">
     $(document).ready(function () {
+        if ($('input[type=checkbox][name=checkitems]:checked').length==0){
+            //将总价设置到显示处
+            $("#Total_price").text(0.0);
+        }
+
+
+
         //全选
         $("#CheckedAll").click(function () {
             if (this.checked) {                 //如果当前点击的多选框被选中
                 $('input[type=checkbox][name=checkitems]').attr("checked", true);
+                // TODO 点击选择全选时触发这里
+                var total =0;
+                //获得所有被选择的input
+                $('input[type=checkbox][name=checkitems]:checked').each(function () {
+                    //被选择的input的value（代表购物车id）
+                    var id = this.value;
+                    //有了id就可以获得所有被选择的购物车的xiaoji
+                    var xiaoji = $("#xiaoji_"+id).text();
+                    //获得总价
+                    total+=xiaoji-0;
+                })
+                //将总价设置到显示处
+                $("#Total_price").text(total);
             } else {
                 $('input[type=checkbox][name=checkitems]').attr("checked", false);
+                // TODO 点击取消全选时触发这里
+                $("#Total_price").text(0.0);
             }
-            //TODO 点击全选按钮获得所有小计的和
-            var selChecked = $(".lgh:checked");
-            var selChecked2=[];
-            //遍历这个selChecked将每一个xiaoji放入selChecked2
-            for(var i=0;i<selChecked.length;i++){
-                selChecked2.push($(".jdcheckbox:checked")[i].value)
-            }
-            var total =0;
-            //循环selChecked2并求和
-            for(var i =0;i<selChecked2.length;i++){
-                var str = "#"+selChecked2[i];
-                var a= $(str).val();
-                var b =a-0;
-                total+=b
-            }
-            $("#Total_price").html(total);
-
         });
         //单选
         $('input[type=checkbox][name=checkitems]').click(function () {
+            var total =0;
+            //获得所有被选择的input
+            $('input[type=checkbox][name=checkitems]:checked').each(function () {
+                //被选择的input的value（代表购物车id）
+                var id = this.value;
+                //有了id就可以获得所有被选择的购物车的xiaoji
+                var xiaoji = $("#xiaoji_"+id).text();
+                //获得总价
+               total+=xiaoji-0;
+            })
+            //将总价设置到显示处
+            $("#Total_price").text(total);
             var flag = true;
             $('input[type=checkbox][name=checkitems]').each(function () {
                 if (!this.checked) {
@@ -52,11 +69,28 @@
                 }
             });
             if (flag) {
+                // TODO 全部的单选框都选上了触发这里
                 $('#CheckedAll').attr('checked', true);
+                var total =0;
+                //获得所有被选择的input
+                $('input[type=checkbox][name=checkitems]:checked').each(function () {
+                    //被选择的input的value（代表购物车id）
+                    var id = this.value;
+                    //有了id就可以获得所有被选择的购物车的xiaoji
+                    var xiaoji = $("#xiaoji_"+id).text();
+                    //获得总价
+                    total+=xiaoji-0;
+                })
+                //将总价设置到显示处
+                $("#Total_price").text(total);
             } else {
+                // TODO 只要有一个单选框没有被选上触发这里
                 $('#CheckedAll').attr('checked', false);
+                //将总价设置到显示处
+                $("#Total_price").text(total);
             }
         });
+
         //输出值
         $("#send").click(function () {
             if($("input[type='checkbox'][name='checkitems']:checked").attr("checked")){
@@ -70,11 +104,8 @@
                 var str = "你未选中任何商品，请选择后在操作！";
                 alert(str);
             }
-
         });
     })
-
-    /*TODO addNumber 和 cutNumber*/
     function jia(id) {
         $.ajax({
             type: "GET",
@@ -82,7 +113,6 @@
             data: "id=" + id,
             success: function (data) {
                 var xiaoji = data.xiaoji;
-                alert(xiaoji)
                 if (data.result) {
                     $("#"+id).val($("#"+id).val()-0+1);
                     $("#xiaoji_"+id).text(xiaoji);
@@ -272,9 +302,9 @@
                 <form  method="post" action="">
 
                     <table class="table_list" th:each="shopCart,iterStat:${shopCartList}">
+                        <!--TODO 复选框在这里-->
                         <tr class="tr on">
-                            <!--TODO 复选框-->
-                            <td class="checkbox"><input class="lgh" name="checkitems" type="checkbox" th:onclick="allprice(${shopCart.id})" th:text="${shopCart.gname}" value="金龙鱼 东北大米 蟹稻共生 盘锦大米5KG" /></td>
+                            <td class="checkbox"><input class="lgh" name="checkitems" type="checkbox" th:value="${shopCart.id}"  th:text="${shopCart.gname}" value="金龙鱼 东北大米 蟹稻共生 盘锦大米5KG" /></td>
                             <td class="name">
                                 <div class="img"><a href="#"><img src="products/p_2.jpg" /></a></div>
                                 <div class="p_name"><a href="#" th:text="${shopCart.gname}">金龙鱼 东北大米 蟹稻共生 盘锦大米5KG</a></div>
@@ -282,14 +312,12 @@
                             <td class="scj sp" >￥39.50</td>
                             <td class="bgj sp" id="price_item_2" th:text="${shopCart.gprice}">￥32.40</td>
                             <td class="sl">
-                                <!--TODO 购物车页面展示数据的地方-->
                                 <div class="Numbers">
                                     <a onClick="setAmount.reduce('#qty_item_')" href="javascript:void(0)" th:onclick="'javascript:jian(\''+${shopCart.id}+'\');'" class="jian">-</a>
                                     <input  th:value="${shopCart.gnumber}" type="text" name="qty_item_" th:id="${shopCart.id}" onkeyup="setAmount.modify('#qty_item_')" class="number_text">
                                     <a onclick="setAmount.add('#qty_item_')" href="javascript:void(0)" th:onclick="'javascript:jia(\''+${shopCart.id}+'\');'" class="jia">+</a>
                                 </div>
                             </td>
-                            <!--TODO 小计-->
                             <td class="xj" th:text="${shopCart.xiaoji}" th:id="|xiaoji_${shopCart.id}|" ><!--<span id="total_item_2"></span>--><input type="hidden" name="total_price" id="total_price" value=""></td>
                             <td class="cz">
                                 <p><a href="#">删除</a><P>
@@ -305,7 +333,7 @@
                         <!--结算-->
                         <div class="toolbar_right">
                             <ul class="Price_Info">
-                                <li class="p_Total"><label class="text">商品总价：</label><span class="price sumPrice" id="Total_price"></span></li>
+                                <li class="p_Total"><label class="text">商品总价：</label><span class="price sumPrice" id="Total_price">0</span></li>
                                 <li class="Discount"><label class="text">以&nbsp;&nbsp;节&nbsp;&nbsp;省：</label><span class="price" id="Preferential_price"></span></li>
                                 <li class="integral">本次购物可获得<b id="total_points"></b>积分</li>
                             </ul>

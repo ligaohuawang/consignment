@@ -49,7 +49,7 @@ public class ShopCartController {
      * @return
      */
 
-    @RequestMapping("/shopCartList")//TODO 2.查询购物车信息
+    @RequestMapping("/shopCartList")
     @ResponseBody
     @IsLogin
     public String shopCartList(@CookieValue(name = "cartToken", required = false) String cartToken, String callback) {
@@ -88,7 +88,7 @@ public class ShopCartController {
         return "shopCart";
     }
 
-    /*TODO 加减商品数量*/
+
     /**
      * 添加购物车数量
      */
