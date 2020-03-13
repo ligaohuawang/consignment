@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="header"  class="header page_style">
+    <div class="logo"><a href="index.html"><img src="images/logo.png" /></a></div>
+    <!--结束图层-->
+    <div class="Search">
+        <p><input name="" type="text"  class="text"/><input name="" type="submit" value="搜 索"  class="Search_btn"/></p>
+        <p class="Words"><a href="#">苹果</a><a href="#">香蕉</a><a href="#">菠萝</a><a href="#">西红柿</a><a href="#">橙子</a><a href="#">苹果</a></p>
+    </div>
+    <!--购物车样式-->
+    <div class="hd_Shopping_list" id="Shopping_list">
+
+        <div class="s_cart"><em class="iconfont icon-cart2"></em><a href="#">我的购物车</a> <i class="ci-right">&gt;</i><i class="ci-count" id="shopping-amount">0</i></div>
+        <div class="dorpdown-layer">
+            <div class="spacer"></div>
+            <!--<div class="prompt"></div><div class="nogoods"><b></b>购物车中还没有商品，赶紧选购吧！</div>-->
+            <ul class="p_s_list" id="cartList"><!--TODO 0.头部购物车展示的地方-->
+                <li>
+                    <div class="img"><img src="images/tianma.png"></div>
+                    <div class="content"><p><a href="#">产品名称</a></p><p>颜色分类:紫花8255尺码:XL</p></div>
+                    <div class="Operations">
+                        <p class="Price">￥55.00</p>
+                        <p><a href="#">删除</a></p></div>
+                </li>
+            </ul>
+            <div class="Shopping_style">
+                <div class="p-total">共<b id="spnumber">1</b>件商品　共计<strong>￥ 515.00</strong></div>
+                <a href="ShopCartController/goCartCheck" title="去购物车结算" id="btn-payforgoods" class="Shopping">去购物车结算</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    $(function () {
+        //TODO 1.头部发Ajax去查询购物车信息
+        $.ajax({
+            url: "ShopCartController/shopCartList",
+            success: function (data) {
+                //展示购物车列表
+                if (data != null && data.length > 0) {
+                    //显示购物车的数量
+                    $("#shopping-amount").html(data.length);
+
+                    //循环列出购物车的商品列表
+                    var html = "<ul>";
+                    for (var i = 0; i < data.length; i++) {
+                        html += "<li style='width: 400px; height: auto;'>";
+                        html += "<img style='width: 60px; height: 50px' src='" + data[i].goods.fengmianurl + "'/>";
+                        html += "<b style='margin-left: 10px'>" + data[i].goods.subject + "</b>";
+                        html += "<span style='margin-left: 10px'>" + data[i].goods.price + "x" + data[i].gnumber + "</span>";
+                        html += "<span style='margin-left: 10px'>小计：" + data[i].xiaoji + "</span>";
+                        html += "</li>";
+                    }
+                    html += "</ul>";
+
+                    $("#cartList").html(html);
+                }
+            },
+            dataType: "jsonp"
+        });
+
+        // TODO 4.发送请求去查询购物车所有商品数量和价格之和
+        $.ajax({
+            url: "ShopCartController/selectAllGoodsNumberAndPrice",
+            success: function (data) {
+                if (data.result==true){
+                    //显示商品一共多少件
+                    $("#spnumber").html(data.resultDate.gnumber);
+                    //显示所有购物车的商品的价格
+                    /* $("#spnumber").html(data.resultDate.zongjia);*/
+                }
+            }
+        })
+    })
+</script>
+</html>

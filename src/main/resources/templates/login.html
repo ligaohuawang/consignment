@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath() + '/'}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!--原本的css-->
+    <link href="css/common.css" rel="stylesheet" type="text/css" />
+    <link href="fonts/iconfont.css"  rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="css/Orders.css" rel="stylesheet" type="text/css" />
+    <link href="css/purebox-metro.css" rel="stylesheet" id="skin">
+    <!--layui的css-->
+    <link href="css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+    <link href="css/style2.css" rel="stylesheet" type="text/css" />
+    <link href="lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+
+    <!--原本的js-->
+    <script src="js/jquery.min.1.8.2.js" type="text/javascript"></script>
+    <script src="js/jquery.reveal.js" type="text/javascript"></script>
+    <script src="js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+    <script src="js/common_js.js" type="text/javascript"></script>
+    <script src="js/footer.js" type="text/javascript"></script>
+    <!--layui的js-->
+    <script type="text/javascript" src="lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+    <script type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="js/H-ui.js"></script>
+    <script type="text/javascript" src="js/H-ui.admin.js"></script>
+    <title>用户登录</title>
+</head>
+<body>
+<div class="Reg_log_style">
+    <div class="logo"><a href="#"><img src="images/logo.png" /></a></div>
+    <div class="login_style">
+        <div class="left_img"><img src="images/bg_name_03.png" /></div>
+        <div class="right_img"><img src="images/bg_name_05.png" /></div>
+        <form id="myform" class="sign_area" autocomplete="off">
+            <div class="title_name"><span>登录</span></div>
+            <div class="login_m_1">
+                <div class="add_login">
+                    <ul>
+                        <li class="frame_style"><label class="user_icon"></label><input name="" type="text"  id="user_text"/><i id="user_text_i">用户名</i></li>
+                        <li class="frame_style"><label class="password_icon"></label><input name="" type="password"   id="tbPassword"/><i id="tbPassword_i">密码</i></li>
+                        <!-- 5.隐藏域 -->
+                        <input type="hidden" id="returnUrl" th:value="${returnUrl}"/>
+                    </ul>
+
+                    <div class="auto_login clearfix">
+                        <p class="clearfix">
+                            <a id="check_agreement" href="#" class="check_agreement">自动登录</a>
+                            <input id="autoLoginCheck" type="hidden">
+                            <span id="agreement_tips" class="auto_tips" style="">请勿在公用电脑上启用</span>
+                        </p>
+                        <a href="#" target="_blank" class="forget_pswd" tabindex="-1">忘记密码？</a>
+                    </div>
+                    <div class="center clearfix" ><a class="btn_pink" id="btn_signin" href="javascript:void(0)">立即登录</a></div>
+                </div>
+        </form>
+        <!--其他登录方式-->
+        <div class="Login_Method">
+            <div class="title"><span>第三方登录方式</span></div>
+            <div><a href="#"><img src="images/l_1.png" /></a><a href="#"><img src="images/l_2.png" /></a><a href="#"><img src="images/l_4.png" /></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="btmbg">
+    <div class="btm">
+        备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br>
+
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    /*1.校验用户名和密码是否输入*/
+    $("#user_text").blur(function () {
+        var username=$("#user_text").val();
+        if (username==null||username==''){
+            layer.msg("用户名不能为空！",{icon:0,time:1000})
+        }else {
+            $("#user_text_i").text('');
+        }
+    })
+
+    $("#tbPassword").blur(function () {
+        var password=$("#tbPassword").val();
+        if (password==null||password==''){
+            layer.msg("密码不能为空！",{icon:0,time:1000})
+        }else {
+            $("#tbPassword_i").text('');
+        }
+    })
+
+    $("#btn_signin").click(function() {
+        //用户名
+        var username=$("#user_text").val();
+        //密码
+        var password=$("#tbPassword").val();
+        //ruturnUrl
+        var returnUrl = document.getElementById("returnUrl").value;
+        alert(returnUrl);
+        /*var returnUrl=$("#returnUrl").val();*/
+        //AJAX发请求去前台用户模块
+        $.ajax({
+            url:"frontUserController/login",
+            data:"username="+username+"&password="+password+"&returnUrl="+returnUrl,
+            success:function(data){
+                if(data.result){
+                    layer.msg('登录成功!',{icon:6,time:1000},function () {
+                        /*  $("input[name='uname']").val("");
+                          $("input[name='upassword']").val("");
+                          $("input[name='code']").val("");*/
+                        window.location=data.returnUrl;//登录成功后要去哪里？
+                    });
+
+                }else{
+                    layer.msg(data.data,{icon:5,time:1000},function () {
+                        //window.location="CheShiController/login";//登录失败后要去哪里？
+                    });
+                }
+            }
+
+        })
+    })
+
+
+</script>
+</html>

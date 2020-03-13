@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <!-- 1.不会参考当前路径， -->
+    <base th:href="${#request.getContextPath() + '/'}"/>
+    <!--<base href="<%=request.getContextPath()+"/" %>"/>-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Insert title here</title>
+    <!--  2.引入样式文件 -->
+    <link rel="stylesheet" href="lib/layer/ui/css/layui.css" media="all">
+</head>
+<body>
+
+<!-- 3.用来放分页导航条 -->
+<div id="test1"></div>
+
+<!-- 4.引入分页插件的js包 -->
+<script src="lib/layer/ui/layui.js"></script>
+<script th:inline="javascript">
+
+    // 5.初始化分页导航条
+    layui.use('laypage', function(){
+
+        // 6.获取前端的分页对象
+        var laypage = layui.laypage;
+
+        //7.执行一个laypage实例
+        laypage.render({ // 渲染
+            elem: 'test1' //注意，这里的 test1 是 ID，不用加 # 号
+            ,count: [[${page.total} ]]//数据总数，从服务端得到
+            ,limit: [[${page.size} ]]// 每页显示条数，从服务端得到
+            ,curr:[[${page.current} ]]//当前页数为第几页
+            ,layout: ['prev', 'page', 'next', 'limit','count']
+            ,limits:[5,10,20,30]
+            ,jump: function(obj, first){ // 切换页面的函数
+                //首次不执行
+                if(!first){
+                    location.href=[[${url}]]+"?current="+obj.curr+"&size="+obj.limit
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

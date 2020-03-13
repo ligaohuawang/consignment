@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--layui的css-->
+    <link href="css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+    <link href="css/style2.css" rel="stylesheet" type="text/css" />
+    <link href="lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <!--layui的js-->
+    <script type="text/javascript" src="lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+    <script type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="js/H-ui.js"></script>
+    <script type="text/javascript" src="js/H-ui.admin.js"></script>
+</head>
+<body>
+<div id="header_top">
+    <!--顶顶部样式-->
+    <div id="top">
+        <div class="Inside_pages">
+            <div class="Collection"><span id="welcome_div"></span>下午好，欢迎光临！<em></em><a href="#">收藏我们</a></div>
+            <div class="hd_top_manu clearfix">
+                <ul class="clearfix">
+                    <li class="hd_menu_tit zhuce" data-addclass="hd_menu_hover">欢迎光临本店！<a href="javascript:void(0)" class="red" id="login" onclick="login()">[请登录]</a><a href="javascript:void(0)" class="red" id="logout" onclick="logout()">[退出]</a> 新用户<a href="CheShiController/registered" class="red">[免费注册]</a></li>
+                    <li class="hd_menu_tit" data-addclass="hd_menu_hover"><a href="CheShiController/orderList">我的订单</a></li>
+                    <li class="hd_menu_tit" data-addclass="hd_menu_hover"> <a href="#">购物车</a> </li>
+                    <li class="hd_menu_tit" data-addclass="hd_menu_hover"><a href="#">联系我们</a></li>
+                    <li class="hd_menu_tit list_name" data-addclass="hd_menu_hover"><a href="#" class="hd_menu">客户服务</a>
+                        <div class="hd_menu_list">
+                            <ul>
+                                <li><a href="#">常见问题</a></li>
+                                <li><a href="#">在线退换货</a></li>
+                                <li><a href="#">在线投诉</a></li>
+                                <li><a href="#">配送范围</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="hd_menu_tit phone_c" data-addclass="hd_menu_hover"><a href="javascript:void(0)" class="hd_menu "><em class="iconfont icon-shouji"></em>手机版</a>
+                        <div class="hd_menu_list erweima">
+                            <ul>
+                                <img src="images/erweima.png"  width="100px" height="100"/>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+    //页面加载时触发
+$(function () {
+    $.ajax({
+     url: "frontUserController/isLogin",
+        success: function (date) {
+            if(date.result==true){
+                //已经登录，拿到用户信息放入页面
+                document.getElementById("welcome_div").innerHTML=date.resultDate.username;
+                //显示【退出标签】，隐藏【请登录】标签
+                $("#logout").css('visibility','visible');
+                $("#login").css('visibility','hidden');
+            }else {
+                //未登录，隐藏【退出标签】，显示【请登录】标签
+                $("#logout").css('visibility','hidden');
+                $("#login").css('visibility','visible');
+            }
+        }
+    })
+})
+
+    //点击登录按钮时触发
+    function login() {
+        //获得当前页面url
+        var returnUrl = location.href;
+        //编码url
+        returnUrl = encodeURIComponent(returnUrl);
+        location.href = "CheShiController/login?returnUrl=" + returnUrl;
+    }
+
+
+    //点击退出按钮时触发
+    function logout() {
+        layer.confirm("你确定要退出吗？",function f(index) {
+            $.ajax({
+                url:"frontUserController/logout",
+                success:function (date) {
+                    if (date.result==true){
+                        //退出登录成功
+                        //关闭提示框
+                        layer.close(index);
+                        //跳转到登录页面
+                        //location.href = "CheShiController/login";
+                        //上面那一种没有延迟的效果
+                        window.setTimeout("window.location='CheShiController/login'",1000);
+                    }else {
+                        //退出失败，弹出提示信息
+                        layer.msg(date.data,{icon:5,time:1000})
+                        layer.close(index);
+                    }
+                }
+            })
+        })
+    }
+</script>
+</html>

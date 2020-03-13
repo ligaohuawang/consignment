@@ -1,0 +1,17 @@
+#1.端口号
+server:
+  port: 8081
+
+spring:
+  #2.thymeleaf
+  thymeleaf:
+    cache: false
+  #3.数据源
+  datasource:
+    url: jdbc:mysql:///consignment?serverTimezone=GMT%2B8
+    username: root
+    password: mz666672
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  #4.redis
+  redis:
+    host: 192.168.32.188
