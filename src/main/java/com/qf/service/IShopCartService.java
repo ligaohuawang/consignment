@@ -54,4 +54,26 @@ public interface IShopCartService extends BaseService<ShopCart> {
      * @return
      */
     ResultDate cutNumber(int id);
+
+    /**
+     * 根据商品id和用户id将购物车查询出来
+     * @param checkitems
+     * @param frontUser
+     * @return
+     */
+    List<ShopCart> queryCartsByGidAndUid(Integer[] checkitems, FrontUser frontUser);
+
+    /**
+     * 根据商品购物车id查询购物车信息
+     * @param cids
+     * @return
+     */
+    List<ShopCart> selectListByCids(Integer[] cids);
+
+    /**
+     * 删除购物车清单
+     * @param cids
+     * @return
+     */
+    int deleteByCids(Integer[] cids);
 }

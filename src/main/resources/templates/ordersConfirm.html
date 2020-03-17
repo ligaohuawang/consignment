@@ -9,6 +9,16 @@
     <link href="css/Orders.css" rel="stylesheet" type="text/css" />
     <link href="css/show.css" rel="stylesheet" type="text/css" />
     <link href="css/purebox-metro.css" rel="stylesheet" id="skin">
+    <!--layui的css-->
+    <link href="css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+    <link href="css/style2.css" rel="stylesheet" type="text/css" />
+    <link href="lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <!--layui的js-->
+    <script type="text/javascript" src="lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+    <script type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
+    <script type="text/javascript" src="js/H-ui.js"></script>
+    <script type="text/javascript" src="js/H-ui.admin.js"></script>
     <script src="js/jquery.min.1.8.2.js" type="text/javascript"></script>
     <script src="js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
     <script src="js/jquery.reveal.js" type="text/javascript"></script>
@@ -205,12 +215,16 @@
     <div class="Orders_style clearfix">
         <!--地址信息样式-->
         <div class="Address_info">
+            <!--TODO A addresses-->
             <div class="title_name">默认收货地址<a href="#">其他收货地址</a></div>
-            <ul>
-                <li><label>收件人姓名：</label>花海天堂</li>
-                <li><label>收件人地址：</label>四川成都武侯区创业路5号1单元302室</li>
-                <li><label>收件人电话：</label>12345678987</li>
-                <li><label>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编：</label>123456</li>
+            <ul th:each="address : ${addresses}" th:if="${address.isdefault}==1">
+                 <span>
+                 <input type="hidden" name="aid" id="aid" th:value="${address.id}"/>
+                 </span>
+                <li><label>收件人姓名：</label><div th:text="${address.person}"></div></li>
+                <li><label>收件人地址：</label><div th:text="${address.address}"></div></li>
+                <li><label>收件人电话：</label><div th:text="${address.phone}"></div></li>
+                <li><label>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;编：</label><div th:text="${address.code}"></div></li>
             </ul>
         </div>
     </div>
@@ -220,7 +234,7 @@
             <div class="express_delivery">
                 <div class="title_name">选择快递方式</div>
                 <ul class="dowebok">
-                    <li><input type="radio" name="radio" data-labelauty="圆通快递">
+                    <li><input type="radio" name="radio" data-labelauty="圆通快递" th:value="圆通快递">
                         <div class="description">
                             <em class="arrow"></em>
                             <p>到付价格=现付价格*1.25 ，不足1元按1元收取，到付最低15元起。此价格供参考，详情请咨询圆通当地营业网点</p>
@@ -229,7 +243,7 @@
                             <p><a href="#">点击查看是否在配送范围内</a></p>
                         </div>
                     </li>
-                    <li><input type="radio" name="radio" data-labelauty="中通快递">
+                    <li><input type="radio" name="radio" data-labelauty="中通快递" th:value="中通快递">
                         <div class="description">
                             <em class="arrow"></em>
                             <p>到付价格=现付价格*1.25 ，不足1元按1元收取，到付最低15元起。此价格供参考，详情请咨询圆通当地营业网点</p>
@@ -237,7 +251,7 @@
                             <p class="Note">满68元包邮</p>
                         </div>
                     </li>
-                    <li><input type="radio" name="radio" data-labelauty="申通快递">
+                    <li><input type="radio" name="radio" data-labelauty="申通快递" th:value="申通快递">
                         <div class="description">
                             <em class="arrow"></em>
                             <p>到付价格=现付价格*1.25 ，不足1元按1元收取，到付最低15元起。此价格供参考，详情请咨询圆通当地营业网点</p>
@@ -245,7 +259,7 @@
                             <p class="Note">满68元包邮</p>
                         </div>
                     </li>
-                    <li><input type="radio" name="radio" data-labelauty="邮政EMS">
+                    <li><input type="radio" name="radio" data-labelauty="邮政EMS" th:value="邮政EMS">
                         <div class="description">
                             <em class="arrow"></em>
                             <p>到付价格=现付价格*1.25 ，不足1元按1元收取，到付最低15元起。此价格供参考，详情请咨询圆通当地营业网点</p>
@@ -253,7 +267,7 @@
                             <p class="Note">满68元包邮</p>
                         </div>
                     </li>
-                    <li><input type="radio" name="radio" data-labelauty="城际快递">
+                    <li><input type="radio" name="radio" data-labelauty="城际快递" th:value="城际快递">
                         <div class="description">
                             <em class="arrow"></em>
                             <p>到付价格=现付价格*1.25 ，不足1元按1元收取，到付最低15元起。此价格供参考，详情请咨询圆通当地营业网点</p>
@@ -261,7 +275,7 @@
 
                         </div>
                     </li>
-                    <li><input type="radio" name="radio" data-labelauty="韵达快递">
+                    <li><input type="radio" name="radio" data-labelauty="韵达快递" th:value="韵达快递">
                         <div class="description">
                             <em class="arrow"></em>
                             <p>到付价格=现付价格*1.25 ，不足1元按1元收取，到付最低15元起。此价格供参考，详情请咨询圆通当地营业网点</p>
@@ -269,7 +283,7 @@
                             <p class="Note">满68元包邮</p>
                         </div>
                     </li>
-                    <li><input type="radio" name="radio" data-labelauty="国通快递">
+                    <li><input type="radio" name="radio" data-labelauty="国通快递" th:value="国通快递">
                         <div class="description">
                             <em class="arrow"></em>
                             <p>到付价格=现付价格*1.25 ，不足1元按1元收取，到付最低15元起。此价格供参考，详情请咨询圆通当地营业网点</p>
@@ -277,7 +291,7 @@
                             <p class="Note">满68元包邮</p>
                         </div>
                     </li>
-                    <li><input type="radio" name="radio" data-labelauty="顺丰快递">
+                    <li><input type="radio" name="radio" data-labelauty="顺丰快递" th:value="顺丰快递">
                         <div class="description">
                             <em class="arrow"></em>
                             <p>到付价格=现付价格*1.25 ，不足1元按1元收取，到付最低15元起。此价格供参考，详情请咨询圆通当地营业网点</p>
@@ -285,7 +299,7 @@
                             <p class="Note">满88元包邮</p>
                         </div>
                     </li>
-                    <li><input type="radio" name="radio" data-labelauty="邮政小包">
+                    <li><input type="radio" name="radio" data-labelauty="邮政小包" th:value="邮政小包">
                         <div class="description">
                             <em class="arrow"></em>
                             <p>到付价格=现付价格*1.25 ，不足1元按1元收取，到付最低15元起。此价格供参考，详情请咨询圆通当地营业网点</p>
@@ -307,11 +321,11 @@
             <div class="payment">
                 <div class="title_name">支付方式</div>
                 <ul>
-                    <li><input type="radio" name="radio1" data-labelauty="余额支付"></li>
-                    <li><input type="radio" name="radio1" data-labelauty="支付宝"></li>
-                    <li><input type="radio" name="radio1" data-labelauty="财付通"></li>
-                    <li><input type="radio" name="radio1" data-labelauty="银联支付"></li>
-                    <li><input type="radio" name="radio1" data-labelauty="货到付款"></li>
+                    <li><input type="radio" name="radio1" th:value="余额支付" data-labelauty="余额支付"></li>
+                    <li><input type="radio" name="radio1" th:value="支付宝" data-labelauty="支付宝"></li>
+                    <li><input type="radio" name="radio1" th:value="财付通" data-labelauty="财付通"></li>
+                    <li><input type="radio" name="radio1" th:value="银联支付" data-labelauty="银联支付"></li>
+                    <li><input type="radio" name="radio1" th:value="货到付款" data-labelauty="货到付款"></li>
                 </ul>
             </div>
             <div class="invoice_style">
@@ -346,27 +360,19 @@
             <!--产品列表-->
             <div class="product_List">
                 <table>
+                    <!--TODO A carts-->
                     <thead><tr class="title"><td class="name">商品名称</td><td class="price">商品价格</td><td class="Preferential">优惠价</td><td class="Quantity">购买数量</td><td class="Money">金额</td></tr></thead>
                     <tbody>
-                    <tr>
+                    <tr th:each="cart : ${carts}">
+                        <td><input type="hidden" name="cid" th:value="${cart.id}"/></td>
                         <td class="Product_info">
                             <a href="#"><img src="products/p_11.jpg"  width="100px" height="100px"/></a>
-                            <a href="#" class="product_name">麻阳冰糖橙子甜橙冰糖柑8斤新鲜水果甜过永兴冰糖橙赣南脐橙包邮</a>
+                            <a href="#" class="product_name" th:text="${cart.goods.subject}">麻阳冰糖橙子甜橙冰糖柑8斤新鲜水果甜过永兴冰糖橙赣南脐橙包邮</a>
                         </td>
-                        <td><i>￥</i>123.00</td>
-                        <td><i>￥</i>112.00</td>
-                        <td>2</td>
-                        <td class="Moneys"><i>￥</i>224.00</td>
-                    </tr>
-                    <tr>
-                        <td class="Product_info">
-                            <a href="#"><img src="products/p_12.jpg"  width="100px" height="100px"/></a>
-                            <a href="#" class="product_name">麻阳冰糖橙子甜橙冰糖柑8斤新鲜水果甜过永兴冰糖橙赣南脐橙包邮</a>
-                        </td>
-                        <td><i>￥</i>123.00</td>
-                        <td><i>￥</i>112.00</td>
-                        <td>2</td>
-                        <td class="Moneys"><i>￥</i>224.00</td>
+                        <td><i>￥<span th:text="${cart.goods.price}"></span></i></td>
+                        <td><i>￥<span th:text="${cart.goods.price}"></span></i></td>
+                        <td th:text="${cart.gnumber}">2</td>
+                        <td class="Moneys"><i>￥<span th:text="${cart.xiaoji}"></span></i></td>
                     </tr>
                     </tbody>
                 </table>
@@ -390,12 +396,12 @@
                 <div class="price_style">
                     <div class="right_direction">
                         <ul>
-                            <li><label>商品总价</label><i>￥</i><span>448.00</span></li>
+                            <li><label>商品总价</label><i>￥</i><span th:text="${#numbers.formatCurrency(allprice)}"></span></li>
                             <li><label>优惠金额</label><i>￥</i><span>-23.00</span></li>
                             <li><label>配&nbsp;&nbsp;送&nbsp;&nbsp;费</label><i>￥</i><span>0</span></li>
                             <li class="shiji_price"><label>实&nbsp;&nbsp;付&nbsp;&nbsp;款</label><i>￥</i><span>425.00</span></li>
                         </ul>
-                        <div class="btn"><input name="submit" type="submit" value="提交订单" class="submit_btn"/> <input name="" type="button"  onclick="#:window.history.go(-1);" value="返回购物车"  class="return_btn"/></div>
+                        <div class="btn"><input name="submit" type="button" th:onclick="notarizeAddress()" value="提交订单" class="submit_btn"/> <input name="" type="button"  onclick="#:window.history.go(-1);" value="返回购物车"  class="return_btn"/></div>
                         <div class="integral right">待订单确认后，你将获得<span>345</span>积分</div>
                     </div>
                 </div>
@@ -502,6 +508,50 @@
     $(function(){
         $(':input').labelauty();
     });
+
+
+    function notarizeAddress() {
+        //快递方式
+        var expressmethod = $("input[name='radio'][type='radio']:checked").val();
+        if (null==expressmethod){
+           layer.msg("请选择快递方式")
+        }else {
+            //支付方式
+            var paymethod = $("input[name='radio1'][type='radio']:checked").val();
+            if (null==paymethod){
+                layer.msg("请选择支付方式")
+            }else {
+                //地址id
+                var aid = $("#aid").val();
+                //获得商品清单的id
+                var cids = [];//创建一个数组
+                $("input[name='cid'][type='hidden']").each(function () {
+                    var cid = $(this).val();
+                    cids.push(cid);//将元素放入数组中
+                });
+                //TODO B 提交下单
+                   $.ajax({
+                       type: "post",
+                       url: "/orderController/submitCreateOrder",
+                       traditional: true,
+                       data: {"aid": aid, "cids": cids,"expressmethod": expressmethod,"paymethod": paymethod},
+                       success: function (data) {
+                           if (data.code == "200") {
+                               //TODO C 跳转到订单支付页面
+                               location.href = "/pay/alipay?orderid=" + data.data.oid;
+                           } else {
+                               alert(data.msg);
+                           }
+                       },
+                       dataType: "json"
+                   });
+            }
+        }
+
+
+
+
+    }
 </script>
 </body>
 </html>

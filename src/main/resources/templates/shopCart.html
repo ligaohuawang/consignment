@@ -299,8 +299,8 @@
                 </ul>
             </div>
             <div class="shopping">
-                <form  method="post" action="">
-
+                <!--TODO A form表单提交数据-->
+                <form  method="post" action="/orderController/toCreateOrder">
                     <table class="table_list" th:each="shopCart,iterStat:${shopCartList}">
                         <!--TODO 复选框在这里-->
                         <tr class="tr on">
@@ -337,7 +337,7 @@
                                 <li class="Discount"><label class="text">以&nbsp;&nbsp;节&nbsp;&nbsp;省：</label><span class="price" id="Preferential_price"></span></li>
                                 <li class="integral">本次购物可获得<b id="total_points"></b>积分</li>
                             </ul>
-                            <div class="btn"><a class="cartsubmit" href="CheShiController/ordersConfirm"></a><a class="continueFind" href="product_list.html"></a></div>
+                            <div class="btn"><button class="cartsubmit" type="submit"></button><a class="continueFind" href="product_list.html"></a></div>
                         </div>
                     </div>
                 </form>

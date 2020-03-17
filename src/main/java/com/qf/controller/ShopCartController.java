@@ -25,7 +25,7 @@ public class ShopCartController {
     private IShopCartService iShopCartService;
 
     /**
-     *  添加购物车，不是必须要登录才能添加购物车
+     *  添加购物车，必须要登录才能添加购物车
      * @param gid
      * @param number
      * @return
@@ -57,7 +57,6 @@ public class ShopCartController {
         //2.调用购物车服务查询购物车信息
         FrontUser frontUser = UserHolder.getUser();
         List<ShopCart> shopCartList = iShopCartService.shopCartList(frontUser, cartToken);
-        System.out.println(iShopCartService);
         return callback != null ? callback + "(" + JSON.toJSONString(shopCartList) + ")" : JSON.toJSONString(shopCartList);
     }
 
@@ -96,7 +95,6 @@ public class ShopCartController {
     @ResponseBody
     public ResultDate addNumber(int id){
         ResultDate resultDate = iShopCartService.addNumber(id);
-
         return resultDate;
     }
 

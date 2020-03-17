@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -241,5 +242,52 @@ public class IShopCartServiceImpl implements IShopCartService {
     @Override
     public ResultDate cutNumber(int id) {
         return null;
+    }
+
+    /**
+     * 根据商品id和用户id将购物车查询出来
+     * @param checkitems
+     * @param frontUser
+     * @return
+     */
+    @Override
+    public List<ShopCart> queryCartsByGidAndUid(Integer[] checkitems, FrontUser frontUser) {
+        //1.创建条件构造器
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("uid", frontUser.getId());
+        //商品id在这个数组里面的话就会被查询出来
+        queryWrapper.in("id", checkitems);
+        List<ShopCart> shopCartList = iShopCartMapper.selectList(queryWrapper);
+
+        for (ShopCart shopCart : shopCartList) {
+            Integer id = shopCart.getGid();
+            Goods goods =iGoodsService.selectById(id);
+            shopCart.setGoods(goods);
+        }
+        return shopCartList;
+    }
+
+    /**
+     * 根据商品购物车id查询购物车信息
+     * @param cids
+     * @return
+     */
+    @Override
+    public List<ShopCart> selectListByCids(Integer[] cids) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.in("id",cids);
+        List<ShopCart> shopCartList = iShopCartMapper.selectList(queryWrapper);
+        return shopCartList;
+    }
+
+    /**
+     * 删除购物车清单
+     * @param cids
+     * @return
+     */
+    @Override
+    public int deleteByCids(Integer[] cids) {
+        int i = iShopCartMapper.deleteBatchIds(Arrays.asList(cids));
+        return i;
     }
 }

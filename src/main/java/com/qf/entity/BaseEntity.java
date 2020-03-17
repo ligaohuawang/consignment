@@ -16,7 +16,7 @@ import java.util.Date;
 @Accessors(chain = true)//链式编程
 public class BaseEntity implements Serializable {
     @TableId(type = IdType.AUTO)//主键自动递增
-    private Integer id;
+    private Integer id;//1表示未删除，0表示已经被删除
     private Date createTime;
     private Integer status;
 }
