@@ -129,9 +129,6 @@ public class IOrderServiceImpl implements IOrderService {
 
             //删除购物车清单
             int i = iShopCartService.deleteByCids(cids);
-
-
-            //TODO B 最重要的一步，生成采购单(是用户支付成功后再生成采购单吗，不是，万一是货到付款呢)
             PurchaseOrder purchaseOrder = new PurchaseOrder();
             purchaseOrder.setCreateTime(new Date())
                     .setStatus(0);
@@ -185,7 +182,31 @@ public class IOrderServiceImpl implements IOrderService {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("oid",out_trade_no);
         Orders orders = iOrdersMapper.selectOne(queryWrapper);
-        orders.setStatus(i);
+        orders.setPayStatus(i);
         iOrdersMapper.updateById(orders);
+    }
+
+    /**
+     * 查询用户订单
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Orders> selectUserOrder(Integer id) {
+        //先根据id查询出订单集合
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("uid",id);
+        List<Orders> ordersList = iOrdersMapper.selectList(queryWrapper);
+        //遍历订单集合查询订单详情
+        if (ordersList.size()>0){
+            for (int i = 0; i < ordersList.size(); i++) {
+                QueryWrapper queryWrapper1 = new QueryWrapper();
+                queryWrapper1.eq("oid",ordersList.get(i).getOid());
+                List<OrderDetails> orderDetailsList = iOrderDetailsMapper.selectList(queryWrapper1);
+                ordersList.get(i).setOrderDetails(orderDetailsList);
+            }
+            return ordersList;
+        }
+        return null;
     }
 }

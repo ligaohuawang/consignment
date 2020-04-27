@@ -89,6 +89,24 @@
             <version>4.8.73.ALL</version>
         </dependency>
 
+        <!--TODO I8 添加与RabbitMQ相关的依赖-->
+        <!--16.与RabbitMQ相关的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <!--TODO I11 发送邮件相关依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+         <!--18.缓存相关的依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

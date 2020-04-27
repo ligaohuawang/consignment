@@ -26,4 +26,6 @@ public class PurchaseOrder extends BaseEntity{
     private String code;
     private String expressmethod;
     private Integer puid;
+    private Integer payStatus;
+    private Integer deliver;
 }

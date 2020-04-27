@@ -35,4 +35,18 @@ public interface IFrontUserService {
      * @param loginToken
      */
     void logout(String loginToken,HttpServletResponse response);
+
+    /**
+     * 根据用户名查询用户
+     * @param username
+     * @return
+     */
+    FrontUser selectUserByUsername(String username);
+
+    /**
+     * 根据用户名修改密码
+     * @param username
+     * @param newpassword
+     */
+    void updatePassword(String username, String newpassword);
 }

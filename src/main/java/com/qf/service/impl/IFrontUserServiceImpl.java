@@ -1,6 +1,5 @@
 package com.qf.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.qf.aop.UserHolder;
 import com.qf.entity.FrontUser;
 import com.qf.mapper.IFrontUserMapper;
 import com.qf.result.ResultDate;
@@ -154,5 +153,37 @@ public class IFrontUserServiceImpl implements IFrontUserService {
             cookie.setPath("/");
             response.addCookie(cookie);
         }
+    }
+
+    /**
+     * 根据用户名查询用户
+     * @param username
+     * @return
+     */
+    @Override
+    public FrontUser selectUserByUsername(String username) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("username",username);
+        FrontUser frontUser = iFrontUserMapper.selectOne(queryWrapper);
+        return frontUser;
+    }
+
+    /**
+     * 根据用户名修改密码
+     * @param username
+     * @param newpassword
+     */
+    @Override
+    public void updatePassword(String username, String newpassword) {
+    //先根据用户名查询出用户
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("username",username);
+        FrontUser frontUser = iFrontUserMapper.selectOne(queryWrapper);
+
+        //修改密码前先将新密码进行MD5加密
+        String newpassword2 = DigestUtils.md5DigestAsHex(newpassword.getBytes(StandardCharsets.UTF_8));
+        frontUser.setPassword(newpassword2);
+        //将用户设置回去
+        iFrontUserMapper.update(frontUser,queryWrapper);
     }
 }

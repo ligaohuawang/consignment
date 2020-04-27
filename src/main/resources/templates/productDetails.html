@@ -218,22 +218,18 @@
         <!--产品图片放大-->
         <div class="mod_picfold clearfix">
             <div class="clearfix" id="detail_main_img">
-                <div class="layout_wrap preview">
+                <div class="layout_wrap preview" >
                     <div id="vertical" class="bigImg">
-                        <img src="mid/01.jpg" width="" height="" alt="" id="midimg" />
+                        <img th:src="|/GoodsController/queryImageByServer?ShangChuanRealpath=${goodsDetatis.fengmianurl}|" width="" height="" alt="" id="midimg" />
                         <div id="winSelector"></div>
                     </div>
+
+                    <!--商品详情图片-->
                     <div class="smallImg">
                         <div class="scrollbutton smallImgUp disabled">&lt;</div>
                         <div id="imageMenu">
-                            <ul>
-                                <li><img src="small/01.jpg" width="68" height="68" alt="洋妞"/></li>
-                                <li><img src="small/02.jpg" width="68" height="68" alt="洋妞"/></li>
-                                <li><img src="small/03.jpg" width="68" height="68" alt="洋妞"/></li>
-                                <li><img src="small/04.jpg" width="68" height="68" alt="洋妞"/></li>
-                                <li><img src="small/05.jpg" width="68" height="68" alt="洋妞"/></li>
-                                <li><img src="small/06.jpg" width="68" height="68" alt="洋妞"/></li>
-                                <li><img src="small/07.jpg" width="68" height="68" alt="洋妞"/></li>
+                            <ul th:each="url,iterStat:${urlList}">
+                                <li><img th:src="|/GoodsController/queryImageByServer?ShangChuanRealpath=${url}|" width="68" height="68" alt="洋妞"/></li>
                             </ul>
                         </div>
                         <div class="scrollbutton smallImgDown">&gt;</div>
@@ -253,11 +249,11 @@
         <!--产品信息-->
         <div class="property">
             <form action="javascript:addToCart(97)" name="ECS_FORMBUY" id="ECS_FORMBUY">
-                <h2 th:text="${goodsDetatis.subject}">乐品乐茶 碧螺春2015新茶茶叶绿茶一级洞庭山明前春茶礼盒125g*2</h2>
-                <div class="goods_info">◆买即送大麦茶◆满2件减10元再赠2罐大麦茶◆礼品袋茶包免费赠◆</div>
+                <h2 th:text="${goodsDetatis.subject}"></h2>
+                <div class="goods_info" th:text="${goodsDetatis.info}"></div>
                 <div class="ProductD clearfix">
                     <div class="productDL">
-                        <dl><dt>售&nbsp;&nbsp;&nbsp;&nbsp;价：</dt><dd><span id="ECS_SHOPPRICE"><i>￥</i><span th:text="${goodsDetatis.price}"></span>121.01</span><del>市场价：￥220.01</del></dd> </dl>
+                        <dl><dt>售&nbsp;&nbsp;&nbsp;&nbsp;价：</dt><dd><span id="ECS_SHOPPRICE"><i>￥</i><span th:text="${goodsDetatis.price}"></span></span><del>市场价：<span th:text="${goodsDetatis.shiprice}"></span></del></dd> </dl>
                         <dl><dt>总 重 量：</dt><dd>140克</dd> </dl>
                         <dl>
                             <dt>规&nbsp;&nbsp;&nbsp;&nbsp;格：</dt>

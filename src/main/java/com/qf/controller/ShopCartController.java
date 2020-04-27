@@ -78,6 +78,7 @@ public class ShopCartController {
      * @param map
      * @return
      */
+    //TODO C2 接收请求去购物车页面
     @RequestMapping("/goCartCheck")
     @IsLogin(mustLogin = true)
     public String goCartCheck(ModelMap map){

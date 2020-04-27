@@ -532,12 +532,14 @@
             <!--产品列表样式-->
             <div class="p_list  clearfix">
                 <ul>
+                    <!--TODO A1 展示商品的地方-->
                     <tr th:each="good,iterStat:${goodsList}">
                     <li class="gl-item">
                         <em class="icon_special tejia"></em>
                         <div class="Borders">
-                            <div class="img"><a th:href="|/GoodsController/productDetails?gid=${good.id}|"><img src="products/P_1.jpg" style="width:220px;height:220px"></a></div>
-                            <div class="Price"><b th:text="${good.price}">¥89</b><span>[¥49.01/500g]</span></div>
+                            <!--TODO A2 发送请求携带图片路径让controller帮忙读取它所在电脑的磁盘中的图片（封面）-->
+                            <div class="img"><a th:href="|/GoodsController/productDetails?gid=${good.id}|"><img th:src="|/GoodsController/queryImageByServer?ShangChuanRealpath=${good.fengmianurl}|" style="width:220px;height:220px"></a></div>
+                            <div class="Price"><b th:text="${good.price}">¥89</b><span>[规格：500g]</span></div>
                             <div class="name"><a href="CheShiController/productDetails" th:text="${good.info}">乐事 无限薯片三连装（原味+番茄+烤肉）104g*3/组</a></div>
                             <div class="Review">标题：<a href="#" th:text="${good.subject}">2345</a></div>
                             <div class="p-operate">

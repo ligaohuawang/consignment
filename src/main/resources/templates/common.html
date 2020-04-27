@@ -15,7 +15,8 @@
                         <div class="background_img"></div>
                     </div>
                     <div class="user_name">
-                        <p><span class="name">化海天堂</span><a href="CheShiController/changePassword">[修改密码]</a></p>
+                        <!--TODO I1 点击忘记密码发送请求跳转到页面-->
+                        <p><span class="name" id="welcome_div2"></span><a href="/ForgetPasswordController/toForgetPasswordPage">[修改密码]</a></p>
                         <p>访问时间：2016-1-21 10:23</p>
                     </div>
                 </div>
@@ -25,7 +26,7 @@
                         <dt class="transaction_manage"><em class="icon_1"></em>订单中心</dt>
                         <dd>
                             <ul>
-                                <li> <a href="CheShiController/orderList"> 我的订单</a></li>
+                                <li> <a href="javascript:void(0)" th:onclick="myOrder()"> 我的订单</a></li>
                                 <li> <a href="CheShiController/address">收货地址</a></li>
                                 <!--<li> <a href="user.php?act=booking_list"> 缺货登记</a></li>-->
                             </ul>
@@ -59,8 +60,12 @@
                         <dt class="transaction_manage"><em class="icon_4"></em>代销中心</dt>
                         <dd>
                             <ul>
-                                <li> <a href="user.php?act=myshop">申请代销</a></li>
-                                <li> <a href="user.php?act=myguide">我的采购单</a></li>
+                                <!--TODO F1 点击申请代销触发点击事件-->
+                                <li> <a href="javascript:void(0)" onclick="admin_edit('申请代销','PurchaseOrderController/applyForSell','1','800','700')">申请代销</a></li>
+                                <!--TODO H1 点击“我的代销申请”触发事件发送请求给controller-->
+                                <li> <a href="javascript:void(0)" onclick="admin_edit2('我的申请代销','PurchaseOrderController/myApplyForSell','1','1200','500')">我的申请代销</a></li>
+                                <!--TODO J1 点击“我的采购单”触发事件发送请求给controller-->
+                                <li> <a href="javascript:void(0)" onclick="admin_edit3('我的采购单','PurchaseOrderController/myPurchaseOrders','1','1200','700')">我的采购单</a></li>
                               <!-- <li> <a href="user.php?act=myaccount"> 我的佣金</a></li>
                                 <li> <a href="user.php?act=account_raply">申请提现</a></li>-->
                             </ul>
@@ -71,4 +76,56 @@
             </div>
         </div>
 </body>
+<script>
+
+    //TODO F2 发请求到 F3 弹出画好的页面
+    //申请代销的
+    function admin_edit(title,url,id,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    //查看我的代销申请的
+    function admin_edit2(title,url,id,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    //查看我的采购订单的
+    function admin_edit3(title,url,id,w,h){
+        layer_show(title,url,w,h);
+    }
+
+    //页面加载时触发
+    $(function () {
+        $.ajax({
+            url: "frontUserController/isLogin",
+            success: function (date) {
+                if(date.result==true){
+                    //已经登录，拿到用户信息放入页面
+                    document.getElementById("welcome_div2").innerHTML=date.resultDate.username;
+                }else {
+                    document.getElementById("welcome_div2").innerHTML="你好，请登录。";
+                }
+            }
+        })
+    })
+
+    function myOrder() {
+        $.ajax({
+            url: "frontUserController/isLogin",
+            success: function (date) {
+                if(date.result==true){
+                    //已经登录，拿到用户id
+                    var id = date.resultDate.id;
+                    location.href = "orderController/selectUserOrder?id=" + id;
+                }else {
+                    //获得当前页面url
+                    var returnUrl = location.href;
+                    //编码url
+                    returnUrl = encodeURIComponent(returnUrl);
+                    location.href = "CheShiController/login?returnUrl=" + returnUrl;
+                }
+            }
+        })
+    }
+</script>
 </html>

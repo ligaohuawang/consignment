@@ -215,7 +215,7 @@
     <div class="Orders_style clearfix">
         <!--地址信息样式-->
         <div class="Address_info">
-            <!--TODO A addresses-->
+
             <div class="title_name">默认收货地址<a href="#">其他收货地址</a></div>
             <ul th:each="address : ${addresses}" th:if="${address.isdefault}==1">
                  <span>
@@ -328,7 +328,7 @@
                     <li><input type="radio" name="radio1" th:value="货到付款" data-labelauty="货到付款"></li>
                 </ul>
             </div>
-            <div class="invoice_style">
+            <!--<div class="invoice_style">
                 <ul>
                     <li class="invoice_left"><input name="" type="checkbox" value="" data-labelauty="是否开发票"/> </li>
                     <li class="invoice_left"><select name="somename" class="SlectBox" onclick="console.log($(this).val())" onchange="console.log('change is firing')">
@@ -356,19 +356,23 @@
 
                     </li>
                 </ul>
-            </div>
+            </div>-->
             <!--产品列表-->
+            <!--TODO D3 订单确认页面的产品列表在这里-->
             <div class="product_List">
                 <table>
-                    <!--TODO A carts-->
+
                     <thead><tr class="title"><td class="name">商品名称</td><td class="price">商品价格</td><td class="Preferential">优惠价</td><td class="Quantity">购买数量</td><td class="Money">金额</td></tr></thead>
                     <tbody>
                     <tr th:each="cart : ${carts}">
-                        <td><input type="hidden" name="cid" th:value="${cart.id}"/></td>
-                        <td class="Product_info">
-                            <a href="#"><img src="products/p_11.jpg"  width="100px" height="100px"/></a>
+                        <td><input type="hidden" name="cid" th:value="${cart.id}"/>
+                            <a href="#"><img th:src="|/GoodsController/queryImageByServer?ShangChuanRealpath=${cart.goods.fengmianurl}|"  width="100px" height="100px"/></a>
                             <a href="#" class="product_name" th:text="${cart.goods.subject}">麻阳冰糖橙子甜橙冰糖柑8斤新鲜水果甜过永兴冰糖橙赣南脐橙包邮</a>
                         </td>
+                       <!-- <td class="Product_info">
+
+
+                        </td>-->
                         <td><i>￥<span th:text="${cart.goods.price}"></span></i></td>
                         <td><i>￥<span th:text="${cart.goods.price}"></span></i></td>
                         <td th:text="${cart.gnumber}">2</td>
@@ -376,10 +380,10 @@
                     </tr>
                     </tbody>
                 </table>
-                <div class="envelopes">
+               <!-- <div class="envelopes">
                     选择已有红包<select name="somename" class="SlectBox" onclick="console.log($(this).val())" onchange="console.log('change is firing')">
                     <option disabled="disabled" selected="selected">选择红包金额</option>
-                    <!--placeholder-->
+                    &lt;!&ndash;placeholder&ndash;&gt;
                     <option value="5元红包">5元红包</option>
                     <option value="10元红包">10元红包</option>
                     <option value="20元红包">20元红包</option>
@@ -388,21 +392,21 @@
                     <option value="200元红包">200元红包</option>
                 </select>
                     或者输入红包序列号<input name="" type="text" class="text_number" /><input type="submit"  class="verification_btn" value="验证序列号"/>
-                </div>
-                <div class="Pay_info">
+                </div>-->
+                <!--<div class="Pay_info">
                     <label>订单留言</label><input name="" type="text"  onkeyup="checkLength(this);" class="text_name " />  <span class="wordage">剩余字数：<span id="sy" style="color:Red;">50</span></span>
-                </div>
+                </div>-->
                 <!--价格-->
                 <div class="price_style">
                     <div class="right_direction">
                         <ul>
                             <li><label>商品总价</label><i>￥</i><span th:text="${#numbers.formatCurrency(allprice)}"></span></li>
-                            <li><label>优惠金额</label><i>￥</i><span>-23.00</span></li>
+                           <!-- <li><label>优惠金额</label><i>￥</i><span>-23.00</span></li>-->
                             <li><label>配&nbsp;&nbsp;送&nbsp;&nbsp;费</label><i>￥</i><span>0</span></li>
-                            <li class="shiji_price"><label>实&nbsp;&nbsp;付&nbsp;&nbsp;款</label><i>￥</i><span>425.00</span></li>
+                            <li class="shiji_price"><label>实&nbsp;&nbsp;付&nbsp;&nbsp;款</label><i>￥</i><span th:text="${#numbers.formatCurrency(allprice)}">425.00</span></li>
                         </ul>
                         <div class="btn"><input name="submit" type="button" th:onclick="notarizeAddress()" value="提交订单" class="submit_btn"/> <input name="" type="button"  onclick="#:window.history.go(-1);" value="返回购物车"  class="return_btn"/></div>
-                        <div class="integral right">待订单确认后，你将获得<span>345</span>积分</div>
+                       <!-- <div class="integral right">待订单确认后，你将获得<span>345</span>积分</div>-->
                     </div>
                 </div>
             </div>
@@ -529,7 +533,7 @@
                     var cid = $(this).val();
                     cids.push(cid);//将元素放入数组中
                 });
-                //TODO B 提交下单
+
                    $.ajax({
                        type: "post",
                        url: "/orderController/submitCreateOrder",
@@ -537,7 +541,6 @@
                        data: {"aid": aid, "cids": cids,"expressmethod": expressmethod,"paymethod": paymethod},
                        success: function (data) {
                            if (data.code == "200") {
-                               //TODO C 跳转到订单支付页面
                                location.href = "/pay/alipay?orderid=" + data.data.oid;
                            } else {
                                alert(data.msg);

@@ -26,6 +26,7 @@ public class Orders extends BaseEntity{
     private String code;
     private String paymethod;
     private String expressmethod;
+    private Integer payStatus;
 
     @TableField(exist = false)
     private List<OrderDetails> orderDetails;

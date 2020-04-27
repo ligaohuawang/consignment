@@ -29,7 +29,6 @@
         $("#CheckedAll").click(function () {
             if (this.checked) {                 //如果当前点击的多选框被选中
                 $('input[type=checkbox][name=checkitems]').attr("checked", true);
-                // TODO 点击选择全选时触发这里
                 var total =0;
                 //获得所有被选择的input
                 $('input[type=checkbox][name=checkitems]:checked').each(function () {
@@ -44,7 +43,7 @@
                 $("#Total_price").text(total);
             } else {
                 $('input[type=checkbox][name=checkitems]').attr("checked", false);
-                // TODO 点击取消全选时触发这里
+
                 $("#Total_price").text(0.0);
             }
         });
@@ -69,7 +68,6 @@
                 }
             });
             if (flag) {
-                // TODO 全部的单选框都选上了触发这里
                 $('#CheckedAll').attr('checked', true);
                 var total =0;
                 //获得所有被选择的input
@@ -84,7 +82,7 @@
                 //将总价设置到显示处
                 $("#Total_price").text(total);
             } else {
-                // TODO 只要有一个单选框没有被选上触发这里
+
                 $('#CheckedAll').attr('checked', false);
                 //将总价设置到显示处
                 $("#Total_price").text(total);
@@ -299,14 +297,15 @@
                 </ul>
             </div>
             <div class="shopping">
-                <!--TODO A form表单提交数据-->
+                <!--TODO C3 大购物车页面在这里展示-->
+                <!--TODO D1 点击马上付款就提交from表单到controller-->
                 <form  method="post" action="/orderController/toCreateOrder">
                     <table class="table_list" th:each="shopCart,iterStat:${shopCartList}">
-                        <!--TODO 复选框在这里-->
+
                         <tr class="tr on">
                             <td class="checkbox"><input class="lgh" name="checkitems" type="checkbox" th:value="${shopCart.id}"  th:text="${shopCart.gname}" value="金龙鱼 东北大米 蟹稻共生 盘锦大米5KG" /></td>
                             <td class="name">
-                                <div class="img"><a href="#"><img src="products/p_2.jpg" /></a></div>
+                                <div class="img"><a href="#"><img th:src="|/GoodsController/queryImageByServer?ShangChuanRealpath=${shopCart.goods.fengmianurl}|" /></a></div>
                                 <div class="p_name"><a href="#" th:text="${shopCart.gname}">金龙鱼 东北大米 蟹稻共生 盘锦大米5KG</a></div>
                             </td>
                             <td class="scj sp" >￥39.50</td>
@@ -334,7 +333,7 @@
                         <div class="toolbar_right">
                             <ul class="Price_Info">
                                 <li class="p_Total"><label class="text">商品总价：</label><span class="price sumPrice" id="Total_price">0</span></li>
-                                <li class="Discount"><label class="text">以&nbsp;&nbsp;节&nbsp;&nbsp;省：</label><span class="price" id="Preferential_price"></span></li>
+                                <!--<li class="Discount"><label class="text">以&nbsp;&nbsp;节&nbsp;&nbsp;省：</label><span class="price" id="Preferential_price"></span></li>-->
                                 <li class="integral">本次购物可获得<b id="total_points"></b>积分</li>
                             </ul>
                             <div class="btn"><button class="cartsubmit" type="submit"></button><a class="continueFind" href="product_list.html"></a></div>

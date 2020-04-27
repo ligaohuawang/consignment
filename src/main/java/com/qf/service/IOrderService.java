@@ -3,6 +3,9 @@ package com.qf.service;
 import com.qf.Base.BaseService;
 import com.qf.entity.FrontUser;
 import com.qf.entity.Orders;
+
+import java.util.List;
+
 public interface IOrderService extends BaseService<Orders> {
     /**
      * 下单的操作
@@ -28,4 +31,11 @@ public interface IOrderService extends BaseService<Orders> {
      * @param i
      */
     void updateOrderStatus(String out_trade_no, int i);
+
+    /**
+     * 查询用户订单
+     * @param id
+     * @return
+     */
+    List<Orders> selectUserOrder(Integer id);
 }

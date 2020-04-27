@@ -7,7 +7,6 @@ import com.qf.entity.FrontUser;
 import com.qf.entity.Orders;
 import com.qf.entity.ShopCart;
 import com.qf.result.ResultData;
-import com.qf.result.ResultDate;
 import com.qf.service.IAddressService;
 import com.qf.service.IOrderService;
 import com.qf.service.IShopCartService;
@@ -15,6 +14,7 @@ import com.qf.utils.PriceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,7 +22,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/orderController")
-public class orderController {
+public class OrderController {
 
     @Autowired
     private IShopCartService iShopCartService;
@@ -31,7 +31,7 @@ public class orderController {
     @Autowired
     private IOrderService iOrderService;
 
-    //TODO A 获取数据去订单编辑页面
+    //TODO D2 controller接收from表单去创建订单
     @IsLogin(mustLogin = true)
     @RequestMapping("/toCreateOrder")
     public String toCreateOrder(Integer[] checkitems, Model model){
@@ -54,7 +54,6 @@ public class orderController {
     }
 
 
-    /*TODO B 确认收货信息并提交订单*/
     @IsLogin(mustLogin = true)
     @ResponseBody
     @RequestMapping("/submitCreateOrder")
@@ -64,4 +63,13 @@ public class orderController {
         Orders orders = iOrderService.createOrder(cids,aid,frontUser,expressmethod,paymethod);
         return new ResultData<Orders>().setCode(ResultData.ResultCodeList.OK).setMsg("下单成功！").setData(orders);
     }
+
+    //TODO E3 接收请求查询用户订单并返回给页面
+    @RequestMapping("/selectUserOrder")
+    public String selectUserOrder(Integer id, ModelMap map){
+    List<Orders> ordersList=iOrderService.selectUserOrder(id);
+    map.put("ordersList",ordersList);
+      return "orderList";
+    }
+
 }

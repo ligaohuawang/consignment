@@ -9,6 +9,7 @@ import com.qf.mapper.IGoodsImagesMapper;
 import com.qf.mapper.IGoodsMapper;
 import com.qf.service.IGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
@@ -38,6 +39,7 @@ public class IGoodsServiceImpl implements IGoodsService {
 
     @Override
     public Goods selectById(Integer id) {
+
         Goods goods = iGoodsMapper.selectById(id);
         //这里还有去图片表将图片查询出来
         QueryWrapper queryWrapper =new QueryWrapper();
@@ -65,8 +67,11 @@ public class IGoodsServiceImpl implements IGoodsService {
         return iGoodsMapper.selectList(null);
     }
 
+
+    //TODO L2 查询未下架的产品列表，
     @Override
     public ModelMap selectPage(Page<Goods> page, ModelMap map) {
+
         //查询未被下架的商品
         QueryWrapper queryWrapper1 = new QueryWrapper();
         queryWrapper1.eq("status",1);

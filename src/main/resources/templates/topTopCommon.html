@@ -23,7 +23,8 @@
             <div class="hd_top_manu clearfix">
                 <ul class="clearfix">
                     <li class="hd_menu_tit zhuce" data-addclass="hd_menu_hover">欢迎光临本店！<a href="javascript:void(0)" class="red" id="login" onclick="login()">[请登录]</a><a href="javascript:void(0)" class="red" id="logout" onclick="logout()">[退出]</a> 新用户<a href="CheShiController/registered" class="red">[免费注册]</a></li>
-                    <li class="hd_menu_tit" data-addclass="hd_menu_hover"><a href="CheShiController/orderList">我的订单</a></li>
+                    <!--TODO E1 点击“我的订单”查询对应订单到订单列表页-->
+                    <li class="hd_menu_tit" data-addclass="hd_menu_hover"><a href="javascript:void(0)" th:onclick="myOrder()">我的订单</a></li>
                     <li class="hd_menu_tit" data-addclass="hd_menu_hover"> <a href="#">购物车</a> </li>
                     <li class="hd_menu_tit" data-addclass="hd_menu_hover"><a href="#">联系我们</a></li>
                     <li class="hd_menu_tit list_name" data-addclass="hd_menu_hover"><a href="#" class="hd_menu">客户服务</a>
@@ -70,6 +71,25 @@ $(function () {
         }
     })
 })
+    //TODO E2 判断是否登录并拿到用户ID,若登录则发送请求
+function myOrder() {
+    $.ajax({
+        url: "frontUserController/isLogin",
+        success: function (date) {
+            if(date.result==true){
+                //已经登录，拿到用户id
+                var id = date.resultDate.id;
+                location.href = "orderController/selectUserOrder?id=" + id;
+            }else {
+                //获得当前页面url
+                var returnUrl = location.href;
+                //编码url
+                returnUrl = encodeURIComponent(returnUrl);
+                location.href = "CheShiController/login?returnUrl=" + returnUrl;
+            }
+        }
+    })
+}
 
     //点击登录按钮时触发
     function login() {

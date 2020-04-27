@@ -28,7 +28,7 @@ public class PayController {
     private IPurchaseOrderService iPurchaseOrderService;
 
 
-    //TODO C 支付宝支付
+
     @RequestMapping("/alipay")
     @ResponseBody
     public void alipay(String orderid, HttpServletResponse response) throws IOException {
@@ -81,6 +81,7 @@ public class PayController {
             if (trade_status.equals("TRADE_SUCCESS") || trade_status.equals("TRADE_FINISHED")) {
                 //支付成功，修改订单状态
                 iOrderService.updateOrderStatus(out_trade_no, 1);
+                //支付成功，修改采购单状态
                 iPurchaseOrderService.updateOrderStatus(out_trade_no, 1);
                 return "success";
             }

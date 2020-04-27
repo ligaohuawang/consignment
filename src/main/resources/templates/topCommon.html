@@ -14,22 +14,23 @@
     </div>
     <!--购物车样式-->
     <div class="hd_Shopping_list" id="Shopping_list">
-
+    <!--TODO B1 公共页面的小购物车在这里-->
         <div class="s_cart"><em class="iconfont icon-cart2"></em><a href="#">我的购物车</a> <i class="ci-right">&gt;</i><i class="ci-count" id="shopping-amount">0</i></div>
         <div class="dorpdown-layer">
             <div class="spacer"></div>
             <!--<div class="prompt"></div><div class="nogoods"><b></b>购物车中还没有商品，赶紧选购吧！</div>-->
             <ul class="p_s_list" id="cartList">
-                <li>
+             <!--   <li>
                     <div class="img"><img src="images/tianma.png"></div>
-                    <div class="content"><p><a href="#">产品名称</a></p><p>颜色分类:紫花8255尺码:XL</p></div>
+                    <div class="content"><p><a href="#"></a></p><p></p></div>
                     <div class="Operations">
-                        <p class="Price">￥55.00</p>
+                        <p class="Price"></p>
                         <p><a href="#">删除</a></p></div>
-                </li>
+                </li>-->
             </ul>
             <div class="Shopping_style">
-                <div class="p-total">共<b id="spnumber">1</b>件商品　共计<strong>￥ 515.00</strong></div>
+               <!-- <div class="p-total">共<b id="spnumber"></b>件商品　共计<strong></strong></div>-->
+                <!--TODO C1 点击去购物车结算发送请求给Controller-->
                 <a href="ShopCartController/goCartCheck" title="去购物车结算" id="btn-payforgoods" class="Shopping">去购物车结算</a>
             </div>
         </div>
@@ -37,7 +38,7 @@
 </div>
 </body>
 <script>
-
+/*TODO B2 页面一加载就发送Ajax请求去查询购物车数据*/
     $(function () {
         $.ajax({
             url: "ShopCartController/shopCartList",
@@ -51,7 +52,7 @@
                     var html = "<ul>";
                     for (var i = 0; i < data.length; i++) {
                         html += "<li style='width: 400px; height: auto;'>";
-                        html += "<img style='width: 60px; height: 50px' src='" + data[i].goods.fengmianurl + "'/>";
+                        html += "<img style='width: 60px; height: 50px' src='/GoodsController/queryImageByServer?ShangChuanRealpath=" + data[i].goods.fengmianurl + "'/>";
                         html += "<b style='margin-left: 10px'>" + data[i].goods.subject + "</b>";
                         html += "<span style='margin-left: 10px'>" + data[i].goods.price + "x" + data[i].gnumber + "</span>";
                         html += "<span style='margin-left: 10px'>小计：" + data[i].xiaoji + "</span>";

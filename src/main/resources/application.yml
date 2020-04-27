@@ -15,3 +15,19 @@ spring:
   #4.redis
   redis:
     host: 192.168.32.188
+# TODO I9 配置rabbitMQ的依赖
+  rabbitmq:
+    host: 192.168.32.188
+    username: guest
+    password: guest
+    virtual-host: /
+# TODO I12 mail发送邮件的相关的配置
+  mail:
+    #协议
+    protocol: smtp
+    #smtp的服务器地址
+    host: smtp.sina.cn
+    #发送方的邮箱
+    username: lgh_123456@sina.cn
+    #发送方的密码，如果开启了授权码就是授权码
+    password: d5753c39c8354b37

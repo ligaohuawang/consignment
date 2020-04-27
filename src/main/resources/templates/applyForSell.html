@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="${#request.getContextPath() + '/'}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Insert title here</title>
+
+    <link rel="stylesheet" href="resources/css/reset.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="resources/css/style.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="resources/css/invalid.css" type="text/css" media="screen"/>
+    <link href="css/style2.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" src="resources/scripts/jquery-1.9.1.min.js"></script>
+    <!-- 添加jquery弹窗的依赖 -->
+    <script src="resources/widget/dialog/jquery-ui-1.9.2.custom.min.js"></script>
+    <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+    <!-- 引入webuploader依赖 -->
+    <script src="resources/widget/webuploader/webuploader.min.js"></script>
+    <link rel="stylesheet" href="resources/widget/webuploader/webuploader.css"/>
+    <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
+    <script type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
+
+    <link href="css/H-ui.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/H-ui.admin.css" rel="stylesheet" type="text/css" />
+    <link href="lib/icheck/icheck.css" rel="stylesheet" type="text/css" />
+    <link href="lib/Hui-iconfont/1.0.1/iconfont.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="lib/zTree/v3/css/zTreeStyle/zTreeStyle.css" type="text/css">
+    <link href="/uploadifive/uploadifive.css"  type="text/css"/>
+
+    <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/icheck/jquery.icheck.min.js"></script>
+    <script type="text/javascript" src="lib/Validform/5.3.2/Validform.min.js"></script>
+    <script type="text/javascript" src="lib/layer/1.9.3/layer.js"></script>
+    <script type="text/javascript" src="js/H-ui.js"></script>
+    <script type="text/javascript" src="js/H-ui.admin.js"></script>
+    <script type="text/javascript" src="lib/zTree/v3/js/jquery.ztree.core-3.5.js"></script>
+    <script type="text/javascript" src="uploadifive/jquery.uploadifive.js"></script>
+
+</head>
+<body>
+<!-- TODO F3 编辑代销申请表 -->
+<div id="addGoodsdialog">
+    <div class="content-box-content">
+        <div class="tab-content default-tab" id="tab2">
+            <!--TODO G1 form表单提交代销申请数据到 ajax-->
+            <form action="" method="post">
+                <fieldset>
+                    <p>
+                        <label>联系电话</label>
+                        <input class="text-input medium-input datepicker" type="text"
+                               name="phone"/>
+                    </p>
+                    <p>
+                        <label>商品名称</label>
+                        <input
+                                class="text-input medium-input datepicker" type="text"
+                                name="gname"/>
+                    </p>
+                    <p>
+                        <label>申请描述</label>
+                        <textarea class="text-input textarea wysiwyg" id="textarea"
+                                  name="reason" cols="79" rows="15"></textarea>
+                    </p>
+                    <p>
+                        <label>商品数量</label>
+                        <input
+                                class="text-input medium-input datepicker" type="text"
+                                name="gnumber"/>
+                    </p>
+                    <!--上传封面-->
+                    <p>
+                        <label>上传图片</label>
+                        <img id="fm_img" style="width: 120px; height: 120px"/>
+                        <input type="hidden" id="fengmianurl" name="url"/>
+                    <div id="fm_shangchuan">上传图片</div>
+                    </p>
+                    </p>
+                    <p>
+                        <button type="submit" id="buttontjsp" >提交申请</button>
+                    </p>
+                </fieldset>
+                <div class="clear"></div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    //页面加载后初始化(上传封面。单张图片)
+    $(function () {
+        // 1.初始化Web Uploader组件
+        var uploader = WebUploader.create({
+            auto: true,// 选完文件后，是否自动上传，true为自动上传。
+            swf: "/resources/widget/webuploader/Uploader.swf", // swf文件路径
+            server: '/GoodsController/shangchuan',// 文件接收服务端。
+            // 选择文件的按钮。可选。内部根据当前运行时创建，可能是input元素，div，也可能是flash.
+            pick: '#fm_shangchuan'
+        });
+        //2.设置上传后的回调方法
+        uploader.on('uploadSuccess', function (file, response) {
+            if (response.code == "200") {
+                $("#fm_img").attr("src", "GoodsController/queryImageByServer?ShangChuanRealpath="+response.data);//设置图片回显
+                $("#fengmianurl").val(response.data);
+            } else {
+                alert("图片上传失败！");
+            }
+        });
+    });
+
+    //TODO G2 表单“提交申请”被点击Ajax提交代销申请单信息
+    $("#buttontjsp").click(function () {
+        $.ajax({
+            type: "GET",
+            url: "PurchaseOrderController/addApplication",
+            data: $("form").serialize(),
+            success: function (data) {
+                if (data.result==true) {
+                    layer.msg('添加成功', {icon: 6, time: 2000}, function () {
+                        parent.$("#aaa").click();
+                    })
+                } else {
+                    layer.msg('添加失败', {icon: 5, time: 2000})
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>
